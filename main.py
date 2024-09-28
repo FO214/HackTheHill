@@ -8,12 +8,51 @@ BAUD_RATE = 115200
 def look_for_beginning(bytes):
 	for i, b in enumerate(bytes):
 		if b == 0x00 and i < len(bytes) and bytes[i+1] == 0xff:
-			length = bytes[i+2] * 256 + bytes[i+3]
-			print("Starting found! length:", length)
-			print("Total length", len(bytes))
-			print("Starting index:", i)
-			print("Ending byte:", bytes[i+length-20:i+length+20])
-			exit()
+			Parser(bytes[i:]).parse()
+
+class Parser:
+	def __init__(self, bytes):
+		self.bytes = list(bytes)
+
+	def next(self, n):
+		nexts = self.bytes[0:n]
+		self.bytes = self.bytes[n:]
+		return nexts
+
+	def expect(self, bytestring):
+		for (b1, b2) in zip(bytestring, self.next(len(bytestring))):
+			if b1 != b2:
+				print(f"Error: expected {b1}, received {b2}")
+				exit()
+
+	def skip_header(self):
+		self.expect(b'\x00\xff')
+
+	def parse_length(self):
+		# little endian: read later byte first
+		b2, b1 = self.next(2)
+		return b1 * 256 + b2
+
+	def parse_other_content(self):
+		return self.next(16)
+
+	def parse_image(self):
+		return self.next(self.length - 16)
+
+	def parse_check(self):
+		check = self.next(1)[0]
+		# this is supposed to be a check byte, but i could not get it working so assume it's correct
+
+	def parse(self):
+		self.skip_header()
+		self.length = self.parse_length()
+		self.other_content = self.parse_other_content()
+		self.image = self.parse_image()
+		self.parse_check()
+		self.expect(b'\xdd')
+		print("Image:", self.image)
+		exit()
+
 
 def main():
 	# Initialize serial connection
