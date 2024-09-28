@@ -1,19 +1,25 @@
 import serial
 import time
 
-import pygame as pg
-
 # Adjust the COM port and baud rate as needed
 COM_PORT = "/dev/ttyUSB0"  # Change this to your actual COM port
 BAUD_RATE = 115200
 
-def getPenState(dist: int) -> str:
-	if dist <= 5:
+dist = 0
+def set_dist(d):
+	global dist
+	dist = d
+
+def get_pen_state() -> str:
+	if dist <= 70:
 		return 'down'
-	if 5 < dist < 7:
+	if 70 < dist < 90:
 		return 'hover'
 	else:
 		return 'up'
+
+def get_dist():
+	return dist
 
 class Parser:
 	def __init__(self):
@@ -67,36 +73,23 @@ class Parser:
 		self.image = self.parse_image()
 		self.parse_check()
 		self.expect(b'\xdd')
+		set_dist(self.image[5050])
 		return self.image
 
-def draw_image(image, display):
-	print("Drawing image...")
-	display.fill((255, 255, 255))
-	for x in range(100):
-		for y in range(100):
-			idx = x + y * 100
-			c = image[x * 100 + (99 - y)]
-			pg.draw.rect(
-				display,
-				(c, c, c),
-				[x*WIDTH, y*WIDTH, WIDTH, WIDTH])
-	pg.display.update()
-
 WIDTH = 4
-def main():
+def start_depth_sensor():
 	# Initialize serial connection
 	ser = serial.Serial(COM_PORT, BAUD_RATE, timeout=1)
 	# Wait for the connection to be established
-	time.sleep(2)
+	time.sleep(0.5)
 
 	# tell it to record unit in millimetres
 	ser.write(b'AT+UNIT=1\r')
+	time.sleep(0.5)
+	ser.read(ser.inWaiting()) # read a response, otherwise it throws a tantrum and refuses to work
 
 	# Set output to go through both usb and lcd
 	ser.write(b'AT+DISP=3\r')
-
-	pg.init()
-	display = pg.display.set_mode((WIDTH*100, WIDTH*100))
 
 	parser = Parser()
 
@@ -104,10 +97,7 @@ def main():
 		# print("Reading this many bytes:", ser.in_waiting)
 		buf = ser.read(ser.inWaiting())
 		try:
-			image = parser.parse(buf)
-			# the buffer could have not been long enough, causing the parse to return None
-			if image:
-				draw_image(image, display)
+			parser.parse(buf)
 		except Exception as e:
 			print("Error parsing image.")
 			print(e)
@@ -115,4 +105,4 @@ def main():
 	ser.close()  # Close the serial connection
 
 if __name__ == '__main__':
-	main()
+	start_depth_sensor()
