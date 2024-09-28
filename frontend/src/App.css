@@ -25,8 +25,8 @@ canvas {
   background-color: white;
   cursor: crosshair;
   margin-top: 20px;
-  width: 100%; /* Ensure canvas fills width */
-  height: calc(100vh - 120px); /* Adjust height based on screen size */
+  width: 90%; /* Set canvas width to 90% of the container */
+  height: calc(85vh - 120px); /* Set height to 85% of the viewport height minus toolbar height */
 }
 
 .toolbar {

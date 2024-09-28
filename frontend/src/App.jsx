@@ -13,13 +13,13 @@ function App() {
     const pixelRatio = window.devicePixelRatio || 1;
 
     // Set canvas size based on window size and device pixel ratio
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = window.innerWidth * 0.9; // Make canvas 90% of window width
+    const height = window.innerHeight * 0.85; // Make canvas 85% of window height
 
     canvas.width = width * pixelRatio;
     canvas.height = height * pixelRatio;
-    canvas.style.width = `${width - 100}px`;
-    canvas.style.height = `${height - 100}px`;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
 
     const context = canvas.getContext('2d');
     context.scale(pixelRatio, pixelRatio); // Scale canvas for high DPI displays
