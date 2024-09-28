@@ -51,6 +51,9 @@ class Parser:
 		if not self.find_start(): return
 		if len(self.bytes) < 12000: return
 		self.skip_header()
+		# wait for the next "heading" if this heading is a false alarm
+		# also re-calibrates the beginning of frames if somehow it's out of sync
+		if self.bytes[2 + 16 + 10000 + 1] != 0xdd: return
 		self.length = self.parse_length()
 		self.other_content = self.parse_other_content()
 		self.image = self.parse_image()
@@ -70,7 +73,6 @@ def draw_image(image, display):
 				(c, c, c),
 				[x*WIDTH, y*WIDTH, WIDTH, WIDTH])
 	pg.display.update()
-	time.sleep(0.5)
 
 WIDTH = 4
 def main():
@@ -88,7 +90,6 @@ def main():
 	parser = Parser()
 
 	while True:
-		time.sleep(0.2)
 		print("Reading this many bytes:", ser.in_waiting)
 		buf = ser.read(ser.inWaiting())
 		try:
