@@ -14,6 +14,7 @@ class Parser:
 	def find_start(self):
 		while len(self.bytes) > 1:
 			if self.bytes[0] == 0x00 and self.bytes[1] == 0xff:
+				# print("Found start!")
 				return True
 			self.next(1)
 		return False
@@ -62,7 +63,7 @@ class Parser:
 		return self.image
 
 def draw_image(image, display):
-	print("Drawing image...")
+	# print("Drawing image...")
 	display.fill((255, 255, 255))
 	for x in range(100):
 		for y in range(100):
@@ -78,11 +79,14 @@ WIDTH = 4
 def main():
 	# Initialize serial connection
 	ser = serial.Serial(COM_PORT, BAUD_RATE, timeout=1)
+
 	# Wait for the connection to be established
-	time.sleep(2)
+	time.sleep(0.5)
 
 	# tell it to record unit in millimetres
 	ser.write(b'AT+UNIT=1\r')
+	time.sleep(0.5)
+	ser.read(ser.inWaiting()) # read a response, otherwise it throws a tantrum and refuses to work
 
 	# Set output to go through both usb and lcd
 	ser.write(b'AT+DISP=3\r')
@@ -95,6 +99,7 @@ def main():
 	while True:
 		# print("Reading this many bytes:", ser.in_waiting)
 		buf = ser.read(ser.inWaiting())
+		# print(buf)
 		try:
 			image = parser.parse(buf)
 			# the buffer could have not been long enough, causing the parse to return None
