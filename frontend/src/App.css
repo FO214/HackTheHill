@@ -1,0 +1,74 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+canvas {
+  border: 2px solid #d0d0d0;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  cursor: crosshair;
+  margin-top: 20px;
+  width: 100%; /* Ensure canvas fills width */
+  height: calc(100vh - 120px); /* Adjust height based on screen size */
+}
+
+.toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px; /* Restrict toolbar size */
+}
+
+.tool-button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tool-button:hover {
+  background-color: #554dff;
+}
+
+.tool-button.active {
+  background-color: #4CAF50;
+}
+
+.tool-button.clear-button {
+  background-color: #ff6b6b;
+}
+
+.tool-button.clear-button:hover {
+  background-color: #ff4c4c;
+}
+
+.tool-button:focus {
+  outline: none;
+}
