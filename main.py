@@ -4,7 +4,7 @@ import time
 import pygame as pg
 
 # Adjust the COM port and baud rate as needed
-COM_PORT = "/dev/ttyUSB0"  # Change this to your actual COM port
+COM_PORT = "/dev/tty.usbserial-202206_0CBF5B0"  # Change this to your actual COM port
 BAUD_RATE = 115200
 
 class Parser:
@@ -74,6 +74,7 @@ def draw_image(image, display):
 				(c, c, c),
 				[x*WIDTH, y*WIDTH, WIDTH, WIDTH])
 	pg.display.update()
+	print(image[5050])
 
 WIDTH = 4
 def main():
