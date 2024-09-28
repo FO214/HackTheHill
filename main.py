@@ -81,6 +81,9 @@ def main():
 	# Wait for the connection to be established
 	time.sleep(2)
 
+	# tell it to record unit in millimetres
+	ser.write(b'AT+UNIT=1\r')
+
 	# Set output to go through both usb and lcd
 	ser.write(b'AT+DISP=3\r')
 
@@ -90,7 +93,7 @@ def main():
 	parser = Parser()
 
 	while True:
-		print("Reading this many bytes:", ser.in_waiting)
+		# print("Reading this many bytes:", ser.in_waiting)
 		buf = ser.read(ser.inWaiting())
 		try:
 			image = parser.parse(buf)
