@@ -1,0 +1,26 @@
+<annotation>
+	<folder>pictures</folder>
+	<filename>Photo on 2024-09-28 at 11.02 PM.jpg</filename>
+	<path>/Users/fahmiomer/HackTheHill/backend/model training/pictures/Photo on 2024-09-28 at 11.02 PM.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2390</width>
+		<height>1594</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>black_dot</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1627</xmin>
+			<ymin>684</ymin>
+			<xmax>1677</xmax>
+			<ymax>723</ymax>
+		</bndbox>
+	</object>
+</annotation>

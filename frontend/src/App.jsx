@@ -109,14 +109,14 @@ function App() {
   };
 
   const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    const context = contextRef.current;
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    setIsDrawing(false); // Set isDrawing to false to prevent re-drawing
-    setMousePosition({ x: 0, y: 0 }); // Reset mouse position
-    setPenState('up'); // Set pen state to up
-  };
-  
+        const canvas = canvasRef.current;
+        const context = contextRef.current;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        setIsDrawing(false); // Set isDrawing to false to prevent re-drawing
+        setMousePosition({ x: 0, y: 0 }); // Reset mouse position
+        setPenState('up'); // Set pen state to up
+     };
+
   
 
   return (
@@ -164,6 +164,8 @@ function App() {
           pointerEvents: 'none', // Prevent interfering with mouse events
         }}
       />
+      <div>{mousePosition.x}</div>
+      <div>{mousePosition.y}</div>
 
     </div>
   );
